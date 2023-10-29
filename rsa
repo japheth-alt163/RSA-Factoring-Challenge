@@ -1,0 +1,41 @@
+#!/usr/bin/python3
+import sys
+
+
+def factorize(n):
+    factors = []
+    d = 2
+    while d * d <= n:
+        if n % d == 0:
+            factors.append(d)
+            n //= d
+        else:
+            d += 1
+    if n > 1:
+        factors.append(n)
+    return factors
+
+
+if len(sys.argv) != 2:
+    print("Usage: rsa <file>")
+    sys.exit(1)
+
+input_file = sys.argv[1]
+
+try:
+    with open(input_file, 'r') as file:
+        lines = file.readlines()
+
+    for line in lines:
+        n = int(line)
+        factors = factorize(n)
+        if len(factors) == 2:
+            p, q = factors
+            print(f"{n}={p}*{q}")
+        else:
+            print(f"{n} is not the product of two prime numbers.")
+
+except FileNotFoundError:
+    print(f"File '{input_file}' not found.")
+except ValueError:
+    print("Invalid input in the file.")
