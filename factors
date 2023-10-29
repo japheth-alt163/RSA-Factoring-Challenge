@@ -1,30 +1,30 @@
 #!/usr/bin/python3
-"""the module that factorizes as many numbers as possible
- into a product of two smaller numbers."""
-from sys import argv
+import sys
 
-def factorize(value):
-    """Print a simple decomposition of an integer greater than 1."""
-    i = 2
 
-    if value < 2:
-        return
+def factorize(n):
+    for i in range(2, n // 2 + 1):
+        if n % i == 0:
+            return i, n // i
+    return n, 1
 
-    while value % i:
-        i += 1
 
-    print("{:.0f} = {:.0f} * {:.0f}".format(value, value / i, i))
+if len(sys.argv) != 2:
+    print("Usage: factors <file>")
+    sys.exit(1)
 
-if len(argv) != 2:
-    exit()
+input_file = sys.argv[1]
 
 try:
-    with open(argv[1]) as file:
-        line = file.readline()
+    with open(input_file, 'r') as file:
+        lines = file.readlines()
 
-        while line != "":
-            value = int(line.split('\n')[0])
-            factorize(value)
-            line = file.readline()
-except:
-    pass
+    for line in lines:
+        n = int(line)
+        p, q = factorize(n)
+        print(f"{n}={p}*{q}")
+
+except FileNotFoundError:
+    print(f"File '{input_file}' not found.")
+except ValueError:
+    print("Invalid input in the file.")
